@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OPR — Clase 6</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+    <style>
+      body { font-family: 'DM Sans', sans-serif; }
+    </style>
+  </head>
+  <body>
+    <h1>Hola mundo</h1>
+    <ul id="estudiantes"></ul>
+
+    <script>
+      const URL = "https://api.myjson.online/v1/records/2859ab62-f84e-4e88-89bc-c0459e6580fa";
+
+      fetch(URL)
+        .then((respuesta) => {
+          if (!respuesta.ok) {
+            throw new Error("Error HTTP: " + respuesta.status);
+          }
+          return respuesta.json();
+        })
+        .then((datos) => {
+          var trabajo = datos.data;
+          const donde = document.getElementById("estudiantes");
+
+          trabajo.forEach((x) => {
+            var links = [];
+            if (x.uno    != "") links.push(x.uno);
+            if (x.dos    != "") links.push(x.dos);
+            if (x.tres   != "") links.push(x.tres);
+            if (x.cuatro != "") links.push(x.cuatro);
+
+            donde.innerHTML +=
+              `<li><a href="${x.cuenta}">${x.nombre}</a> ${pelotitas(links)}</li>`;
+          });
+
+          function pelotitas(links) {
+            var html = "";
+            links.forEach((url) => {
+              html += `<a href="${url}" target="_blank">◉</a> `;
+            });
+            return html;
+          }
+        })
+        .catch((error) => {
+          console.error("Algo salió mal:", error);
+        });
+    </script>
+  </body>
+</html>
